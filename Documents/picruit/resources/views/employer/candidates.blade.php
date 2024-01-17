@@ -1,0 +1,419 @@
+@extends ('layouts.user')
+@section('content')
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+ 
+  
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Signika+Negative&display=swap');
+
+        html,
+        body,
+        .intro {
+            height: 100%;
+        }
+
+        .form-hide-pop {
+            position: fixed;
+            top: 30%;
+            left: 20%;
+            z-index: 100;
+            width: 1200px;
+        }
+
+        @media screen and (min-width:786px) {
+            .form-hide-pop {
+                width: 100%;
+                top: 10%;
+                left: 30%;
+            }
+        }
+
+        table td,
+        table th {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            min-width: 200px;
+            max-width: 200px;
+            color: #ffffff;
+            padding: 15px !important;
+            font-size: 20px !important;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+            font-weight: 400 !important;
+        }
+
+        tbody td {
+            font-weight: 500;
+            color: #999999;
+        }
+
+        .view {
+            color: #666666;
+            color: #198754 !important;
+            width: 50px !important;
+        }
+
+        .search-heading {
+            font-size: 23px !important;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+            font-weight: 400 !important;
+            border: none !important;
+        }
+
+        .search {
+            color: #fff !important;
+        }
+
+        .details-heading {
+            padding-right: 40px !important;
+        }
+
+        .end-button {
+            font-size: 20px !important;
+        }
+        
+        
+         .nav-pills>li.active>a,
+        .nav-pills>li.active>a:hover,
+        .nav-pills>li.active>a:focus {
+            color: #fff;
+            background-color: #198754;
+        }
+        
+                .overlap{
+           position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 100; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+        }
+        .msgbox{
+            position:fixed;
+            background-color:white;
+            text-align:center;
+            border:2px solid black;
+            padding:10px;
+            top: 30%;
+  left: 30%;
+  
+            box-shadow:4px;
+        }
+    </style>
+  <div class="page-wrapper">
+          
+    <div class="page-breadcrumb">
+        <div class="row align-items-center">
+            <div class="col-6">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 d-flex align-items-center">
+                      <li class="breadcrumb-item"><a href="dashboard" class="link"><i class="mdi mdi-home-outline fs-4"></i></a></li>
+                      <li class="breadcrumb-item active" aria-current="page">All jobs</li>
+                    </ol>
+                  </nav>
+                <h1 class="mb-0 fw-bold">All jobs</h1> 
+            </div>
+            
+        </div>
+    </div>
+     <!--start poup-->
+                    <div id="hide-popup" class="form-hide-pop">
+                        <div class="row">
+                            
+                            <div class="col-6 p-5 details-heading" style="background-color:#fff; border-radius:10px;">
+                                <div class="close" style="color:red; text-align:right;"><span style="background-color:black;cursor:pointer;padding: 0px 10px 0px 10;border-radius:50%">X</span></div>
+                                
+                                {{-- <div class="align-self-end">
+                                        <button class="button-view end-button"> <i class="fa fa-close" style="font-size:28px;color:rgb(16, 150, 108) "></i></button>
+                                    </div> --}}
+                                    
+                                <div
+                                    
+                                   
+                                    <h1 class="pop-heading text-white text-center pb-2 pt-2 mb-2"
+                                        style="font-style:italic; background-color:#198754;">Welcome to User
+                                    </h1>
+                                </div>
+                                <div class="d-flex flex-column justify-content-center p-5 shadow-lg">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="details-heading mr-5">Name:-</h3>
+                                        <h3 id="f_name"></h3>
+                                    </div>
+                                    
+                                   
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="details-heading">Number:- </h3>
+                                        <h3 id="number"></h3>
+                                    </div>
+                                   
+                                   
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="details-heading">Address:- </h3>
+                                        <h3 id="area"></h3>
+                                        
+
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="details-heading">Country:- </h3>
+                                        <h3 id="country"></h3>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="details-heading">State:- </h3>
+                                        <h3 id="state"></h3>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="details-heading">City:- </h3>
+                                        <h3 id="city"></h3>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="details-heading">Pincode:- </h3>
+                                        <h3 id="pincode"></h3>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h3 class="details-heading">Aera:- </h3>
+                                        <h3 id="area"></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="overlap">
+                                    <div class="msgbox" id="confirm">
+                                        <h3>if You have to pay ₹500 to view detail</h3>
+                                        <button onClick="closemsg()">Cancel</button>
+                                        <input type="hidden" id="user_id"/>
+                                         <button id="next">Next</button>
+                                    </div>
+                                    </div>
+                    <!--end poup-->
+
+    <header class="py-5 bg-light border-bottom mb-4 fo" style="margin-top: 50px; ">
+        <section class="intro">
+            <div class="mask d-flex align-items-center" style=" min-height:100vh">
+                <div class="container-fluid mt-5">
+                   
+<div style="color:green" id="msg" ></div>
+                   
+                    <!-- searching form-->
+                    <button type="button" class="fw-bolder search-heading">Filter
+                        <i class="fa fa-filter" style="font-size:28px;color:rgb(16, 150, 108) "></i>
+                    </button>
+
+                    <div id="show-hide-form">
+                        <form class="row form-group mr-3" action="" style="background-color: #999999; padding:10px">
+                            <div class="col-3">
+                                <input type="search" class="form-control" name="city" id=""
+                                    aria-describedby="helpId" placeholder="Enter your city">
+                            </div>
+                            <div class="col-2">
+                                <input type="search" class="form-control" name="gender" id=""
+                                    aria-describedby="helpId" placeholder="Enter your gender">
+                            </div>
+
+                            <div class="col-2">
+                                <input type="search" class="form-control" name="qualification" id=""
+                                    aria-describedby="helpId" placeholder="Enter your qulification">
+                            </div>
+
+                            <div class="col-2 mt-1">
+                                <button type="submit" id="helpId" class="form-text text-muted btn btn-info"
+                                    style="margin-left:6px;">Search Details</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--end searching form-->
+                    
+                    <div class="row justify-content-center">
+                        <!-- table form -->
+                        <div class="">
+                            <div class="table-responsive bg-white" data-mdb-perfect-scrollbar="true"
+                                style="position: relative; height: 445px; width:100%;">
+
+                                <table class="table">
+                                    <thead style="background:#198754;">
+             
+                                           <th scope="col"></th>
+                                            <th scope="col">Candidate Name</th>
+                                            <th scope="col">Qualification</th>
+                                            <th scope="col">Country</th>
+                                            <th scope="col">State</th>
+                                            <th scope="col">Gender</th>
+                                             
+                                            
+                                            
+                                             
+                                        </tr>
+                                    </thead>
+                                    @php
+                                        if (isset($infomation)) {
+                                            
+                                        }
+                                        
+                                    @endphp
+
+                                    @foreach ($persanal as $item)
+                                 
+                                        <tbody>
+                                            <tr>
+                                                                                                 <td>
+                                        <button class="dropdown-item" onClick="showdata({{ $item->id }})" style="color:red" >View</button>
+                                   </td>
+                                  
+                                               <td scope="row" style="color: #666666;">{{ $item['name'] }}</td>
+                                                <td>{{ $item['qualification'] }}</td>
+                                                <td>{{ $item['country'] }}</td>
+                                                <td>{{ $item['state'] }}</td>
+                                                <td>{{ $item['gender'] }}</td>
+                                                 <td><a href="{{url('/rating')}}/{{ $item->user_id }}">Rating</a></td>
+
+                                               
+                                            </tr>
+                                    @endforeach
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end table form -->
+
+                </div>
+            </div>
+
+        </section>
+
+    </header>
+    <div class="container-fluid">
+       <div class="row" style="overflow: auto;">
+        <div class="jsgrid-container">
+
+        <div id="grid_table"></div>
+      </div>
+
+       </div>
+  
+        
+    </div>
+  
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script type="module" src="node_modules/spin.js/spin.js"></script>
+
+    <script>
+    $("#msg").hide();
+        function deletejob(data) {
+            
+
+            $.ajax({
+                url: 'deletejob/' + data, //this is your uri
+                type: 'get', //this is your metho
+                dataType: 'json',
+                success: function(response) {
+                 
+                    console.log(response);
+                    $("#msg").text("Data deleted successfully");
+
+                    $("#msg").show(2000)
+                    location.reload(true);
+                }
+            });
+
+
+            console.log(data);
+        }
+     
+    </script>
+    <script>
+    function show(data){
+            $("#confirm").hide();
+            $('.overlap').hide();
+        //   var data= $("#user_id").val();
+          
+            $.ajax({
+                url: '/get-jobshikher-details/' + data, //this is your uri
+                type: 'get', //this is your metho
+                dataType: 'json',
+                success: function(response) {
+
+                    console.log(response);
+
+
+                    $('#f_name').text(response[0]['name'])
+                   
+                    $('#rate').text(response[0]['fees'])
+                    $('#city').text(response[0]['city'])
+                    $('#area').text(response[0]['area'])
+                     $('#country').text(response[0]['country'])
+                
+
+                    $('#segment').text(response[0]['segment'])
+                    $('#pincode').text(response[0]['pincode'])
+                    $('#state').text(response[0]['state'])
+                    $('#user_id').text(response[0]['user_id'])
+                    $('#number').text(response[0]['whatappno'])
+
+
+                    $("#hide-popup").show();
+                }
+            });
+
+
+           
+        }
+    function closemsg() {
+        
+                 $("#confirm").hide();
+                 $('.overlap').hide();
+            }
+    
+        function showdata(data) {
+          $("#confirm").show();
+          $("#user_id").val(data);
+            $('.overlap').show();
+            $('#next').click(function(){
+                
+                show(data);
+            })
+        }
+        
+        $(document).ready(function() {
+            $("#show-hide-form").hide(1000);
+            $(".search-heading").click(function() {
+                $("#show-hide-form").toggle(2000);
+            });
+             $(".close").click(function() {
+                $("#hide-popup").toggle(2000);
+            });
+            
+        });
+
+        $(document).ready(function() {
+            $("#hide-popup").hide();
+
+
+            // $(".button-view").click(function() {
+
+
+            //     $("#hide-popup").toggle(2000);
+
+            // });
+
+        });
+    </script>
+
+    @stop
+          
+
